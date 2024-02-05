@@ -2,7 +2,7 @@ package jb.estudo.ferramentas.controllers;
 
 import java.util.List;
 
-import jb.estudo.ferramentas.models.User;
+import jb.estudo.ferramentas.dtos.CreateUserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<UserDTO> createUser(@RequestBody User user){
+	public ResponseEntity<UserDTO> createUser(@RequestBody CreateUserDTO user){
 		return new ResponseEntity(userService.createUser(user), HttpStatus.OK);
 	}
 
