@@ -28,7 +28,7 @@ public class User implements UserDetails {
 	private String login;
 	
 	@Nonnull
-	@Column(nullable = false, unique = false)
+	@Column(nullable = false)
 	private String password;
 	
 	private String name;

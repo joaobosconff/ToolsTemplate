@@ -12,7 +12,7 @@ import jb.estudo.ferramentas.dtos.UserDTO;
 import jb.estudo.ferramentas.interfaces.UserService;
 
 @RestController
-@RequestMapping("v1/users")
+@RequestMapping("v1/public/users")
 public class UserController {
 
 	@Autowired

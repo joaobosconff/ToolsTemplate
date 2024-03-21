@@ -1,7 +1,9 @@
 package jb.estudo.ferramentas.dtos;
 
+import jakarta.annotation.Nonnull;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -13,7 +15,8 @@ public class CreateUserDTO {
 
     public String name;
 
-    public List<Integer> roles;
+    @Nonnull
+    public List<Integer> roles = new ArrayList<>();
 
 
 }

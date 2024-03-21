@@ -6,10 +6,14 @@ import org.springframework.stereotype.Repository;
 
 import jb.estudo.ferramentas.models.User;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer>{
 
 
-    UserDetails findByLogin(String login);
+    Optional<UserDetails> findByLogin(String login);
+
+    Boolean existsUserByLogin(String login);
 
 }
