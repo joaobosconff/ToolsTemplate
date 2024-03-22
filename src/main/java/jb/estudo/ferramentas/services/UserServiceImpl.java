@@ -30,9 +30,8 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserMapper userMapper;
 
-	private PasswordEncoder passwordEncoder(){
-		return new BCryptPasswordEncoder();
-	}
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	public List<UserDTO> getAllUsers() {
 		return userRepository.findAll().stream().map(user -> userMapper.toDTO(user)).toList();
@@ -48,13 +47,9 @@ public class UserServiceImpl implements UserService {
 		User user = userMapper.toEntity(userDTO);
 		List<Role> roles = userDTO.roles.stream().map(id ->roleService.getRoleById(id)).toList();
 		user.setRoles(roles);
-		user.setPassword(passwordEncoder().encode(user.getPassword()));
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return userMapper.toDTO(userRepository.save(user));
 	}
 
 
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return userRepository.findByLogin(username).orElseThrow();
-	}
 }

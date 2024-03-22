@@ -2,25 +2,24 @@ package jb.estudo.ferramentas.config.security;
 
 import jb.estudo.ferramentas.config.security.filters.AuthenticationFilter;
 import jb.estudo.ferramentas.config.security.filters.AuthorizationFilter;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import jb.estudo.ferramentas.config.security.services.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     @Value("${url.login}")
@@ -39,14 +38,19 @@ public class SecurityConfig {
                 .authorizeHttpRequests((request) -> request
                         .requestMatchers("v1/public/*").permitAll()
                         .anyRequest().authenticated())
-                .addFilterBefore(new AuthenticationFilter(configuration.getAuthenticationManager(), jwtService,urlLogin), UsernamePasswordAuthenticationFilter.class)
-
-                .addFilterAfter(new AuthorizationFilter(userDetailsService,jwtService), UsernamePasswordAuthenticationFilter.class)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .addFilter(new AuthenticationFilter(configuration.getAuthenticationManager(), jwtService,urlLogin))
+                .addFilterAfter(new AuthorizationFilter(userDetailsService, jwtService), AuthenticationFilter.class)
                 .build();
 
 
 
 
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     }

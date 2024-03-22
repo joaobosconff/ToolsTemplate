@@ -33,12 +33,12 @@ public class User implements UserDetails {
 	
 	private String name;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Role> roles = new ArrayList<>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).toList();
+		return roles.stream().map(role -> new SimpleGrantedAuthority("ROLE_".concat(role.getName()))).toList();
 	}
 
 	@Override

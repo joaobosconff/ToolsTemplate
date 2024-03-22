@@ -1,4 +1,4 @@
-package jb.estudo.ferramentas.config.security;
+package jb.estudo.ferramentas.config.security.services;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
