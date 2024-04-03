@@ -10,15 +10,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 
-@Component("delegatedAuthenticationEntryPoint")
+@Component
 public class DelegatedAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Autowired
-    @Qualifier("handlerExceptionResolver")
-    private HandlerExceptionResolver resolver;
+    private HandlerExceptionResolver handlerExceptionResolver;
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) {
-        resolver.resolveException(request, response, null, authException);
+        handlerExceptionResolver.resolveException(request, response, null, authException);
     }
 }

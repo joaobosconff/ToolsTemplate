@@ -45,7 +45,7 @@ public class JWTService {
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException exception){
-            return EMPTY;
+            throw new RuntimeException(exception.getMessage());
         }
     }
 

@@ -39,15 +39,14 @@ public class ExceptionHandlerConfig extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({AccessDeniedException.class})
     public ResponseEntity<Object> handleAccessDeniedException(
-            Exception ex, WebRequest request) {
+            Exception ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(Error.builder()
                         .timeStamp(System.currentTimeMillis())
                         .message(ex.getMessage())
-                        .path("tei")
+                        .path(request.getRequestURI())
                         .build());
     }
-
 }
 
 
