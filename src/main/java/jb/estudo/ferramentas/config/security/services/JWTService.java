@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 
-import static jb.estudo.ferramentas.config.security.SecurityConstants.EMPTY;
-
 @Component
 public class JWTService {
 
