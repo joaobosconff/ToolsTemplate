@@ -18,7 +18,7 @@ public class PublicController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("sign-in")
+    @PostMapping("sign-up")
     public ResponseEntity<UserDTO> createUser(@RequestBody CreateUserDTO user){
         return new ResponseEntity(userService.createUser(user), HttpStatus.OK);
     }

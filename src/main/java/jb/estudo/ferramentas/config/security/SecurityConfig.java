@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -31,6 +32,9 @@ public class SecurityConfig {
     private JWTService jwtService;
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    AuthenticationEntryPoint authEntryPoint;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable())
@@ -41,6 +45,7 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .addFilter(new AuthenticationFilter(configuration.getAuthenticationManager(), jwtService,urlLogin))
                 .addFilterAfter(new AuthorizationFilter(userDetailsService, jwtService), AuthenticationFilter.class)
+                .exceptionHandling((exception)-> exception.authenticationEntryPoint(authEntryPoint))
                 .build();
 
 

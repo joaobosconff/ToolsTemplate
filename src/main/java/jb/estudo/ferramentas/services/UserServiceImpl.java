@@ -3,14 +3,12 @@ package jb.estudo.ferramentas.services;
 import java.util.List;
 
 import jb.estudo.ferramentas.dtos.CreateUserDTO;
+import jb.estudo.ferramentas.exceptions.BadRequestException;
 import jb.estudo.ferramentas.interfaces.RoleService;
 import jb.estudo.ferramentas.models.Role;
 import jb.estudo.ferramentas.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jb.estudo.ferramentas.dtos.UserDTO;
@@ -41,7 +39,7 @@ public class UserServiceImpl implements UserService {
 		Boolean existsUser = userRepository.existsUserByLogin(userDTO.getLogin());
 
 		if(Boolean.TRUE.equals(existsUser)){
-			throw new RuntimeException();
+			throw new BadRequestException("Usuário já cadastrado na base");
 		}
 
 		User user = userMapper.toEntity(userDTO);
