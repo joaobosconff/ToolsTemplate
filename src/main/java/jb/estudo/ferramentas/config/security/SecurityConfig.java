@@ -40,7 +40,7 @@ public class SecurityConfig {
         return http.csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((request) -> request
-                        .requestMatchers("v1/public/*").permitAll()
+                        .requestMatchers("public/*").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(AbstractHttpConfigurer::disable)
                 .addFilter(new AuthenticationFilter(configuration.getAuthenticationManager(), jwtService,urlLogin))

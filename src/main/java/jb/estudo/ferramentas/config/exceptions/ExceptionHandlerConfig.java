@@ -43,6 +43,17 @@ public class ExceptionHandlerConfig extends ResponseEntityExceptionHandler {
                         .path(request.getRequestURI())
                         .build());
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    protected ResponseEntity<Error> handleRuntimeException(RuntimeException e, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Error.builder()
+                        .timeStamp(System.currentTimeMillis())
+                        .message("Ocorreu um erro na API")
+                        .path(request.getRequestURI())
+                        .build());
+    }
+
 }
 
 
