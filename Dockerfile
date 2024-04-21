@@ -10,13 +10,29 @@ RUN mvn clean package
 # Create a custom jre using jlink
 FROM eclipse-temurin:17 as jre-build
 
+COPY --from=builder /app/target/*.jar /app/app.jar
+
+WORKDIR /app
+
+# Get all necessary modules from .jar using jdeps
+RUN jar xf app.jar
+RUN jdeps \
+    --ignore-missing-deps \
+    --print-module-deps \
+    --multi-release 17 \
+    --recursive \
+    --class-path 'BOOT-INF/lib/*' \
+    app.jar > modules.txt
+
+# Create jre using list of modules from .jar
 RUN $JAVA_HOME/bin/jlink \
-         --add-modules ALL-MODULE-PATH \
+         --add-modules $(cat modules.txt) \
          --strip-debug \
          --no-man-pages \
          --no-header-files \
          --compress=2 \
          --output /javaruntime
+
 
 # Setting the env on base image
 FROM debian:buster-slim
