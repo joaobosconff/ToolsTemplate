@@ -45,7 +45,7 @@ COPY --from=jre-build /javaruntime $JAVA_HOME
 # Copy the .jar and running
 RUN mkdir /app
 WORKDIR /app
-COPY --from=builder /app/target/*.jar app.jar
+COPY --from=jre-build /app/app.jar app.jar
 ENV SERVER_PORT=8080
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","./app.jar"]
